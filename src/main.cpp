@@ -7,6 +7,8 @@ void IRAM_ATTR timer_isr(void *arg);
 #define LED 2
 bool pinState = LOW;
 
+#define POTENTIOMETER 4
+
 void setup()
 {
   // Create timer with 1s interval
@@ -17,6 +19,7 @@ void setup()
   esp_timer_create(&timer_config, &timer_handle);
   esp_timer_start_periodic(timer_handle, 1000000);
 
+  Serial.begin(115200);
   pinMode(LED, OUTPUT);
 }
 
@@ -29,4 +32,7 @@ void IRAM_ATTR timer_isr(void *arg)
 {
   pinState = !pinState;
   digitalWrite(LED, pinState);
+
+  int value = analogRead(POTENTIOMETER);
+  Serial.println(value);
 }
